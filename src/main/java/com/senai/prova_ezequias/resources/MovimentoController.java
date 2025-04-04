@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.cert.Extension;
 import java.util.List;
 
 @RestController
@@ -19,14 +20,14 @@ public class MovimentoController {
 
     @PostMapping
     public ResponseEntity<MovimentoDTO> createMovimento(@RequestBody MovimentoDTO movimentoDTO) {
-        MovimentoDTO novoMovimento = movimentoService.createMovimento(movimentoDTO);
-        return new ResponseEntity<>(new MovimentoDTO(), HttpStatus.CREATED);
+        MovimentoDTO novoMovimento = movimentoService.createMovimento(movimentoDTO); // Corrigido aqui
+        return new ResponseEntity<>(novoMovimento, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MovimentoDTO> getMovimentoById(@PathVariable Long id) {
         MovimentoDTO movimentoDTO =  movimentoService.getMovimentoById(id);
-        return new ResponseEntity<>(new MovimentoDTO(), HttpStatus.OK);
+        return ResponseEntity.ok(movimentoDTO);
     }
 
     @GetMapping("/")
@@ -38,12 +39,13 @@ public class MovimentoController {
     @PutMapping("/{id}")
     public ResponseEntity<MovimentoDTO> updateMovimento(@PathVariable Long id, @RequestBody MovimentoDTO movimentoDTO) {
         MovimentoDTO movimento = movimentoService.updateMovimento(id, movimentoDTO);
-        return new ResponseEntity<>(new MovimentoDTO(), HttpStatus.OK);
+        return ResponseEntity.ok(movimento);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMovimento(@PathVariable Long id) {
-        movimentoService.deleteMovimento(id);
+    public ResponseEntity<Void> deleteMovimento(@PathVariable Long id) {
+        MovimentoDTO movimentoDTO = movimentoService.getMovimentoById(id);
+        return ResponseEntity.noContent().build();
     }
 
 

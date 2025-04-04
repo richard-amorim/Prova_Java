@@ -65,11 +65,6 @@ public class MovimentoService {
 
     @Transactional
     public void deleteMovimento(Long id) {
-        Movimento movimento = movimentoRepository.findById(id).orElseThrow(( ()
-                -> new ResourceNotFoundException("Movimento not found")));
-        if (!movimentoRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Movimento not found");
-        }
         movimentoRepository.deleteById(id);
     }
 }
